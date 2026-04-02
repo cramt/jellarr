@@ -42,6 +42,9 @@ export type GetUsersResponse = ApiResponse<UserDtoSchema[]>;
 export type PostNewUserResponse = ApiResponse<UserDtoSchema>;
 export type PostUserPolicyResponse = ApiResponse<void>;
 export type PostStartupCompleteResponse = ApiResponse<void>;
+export type GetStartupUserResponse = ApiResponse<{
+  Name?: string | null;
+}>;
 export type PostStartupConfigurationResponse = ApiResponse<void>;
 export type PostStartupUserResponse = ApiResponse<void>;
 export type PostStartupRemoteAccessResponse = ApiResponse<void>;
@@ -82,6 +85,7 @@ export interface JellyfinClient {
   createUser(body: CreateUserByNameSchema): Promise<void>;
   updateUserPolicy(userId: string, body: UserPolicySchema): Promise<void>;
   completeStartupWizard(): Promise<void>;
+  getStartupUser(): Promise<void>;
   updateStartupConfiguration(
     body: StartupConfigurationDtoSchema,
   ): Promise<void>;

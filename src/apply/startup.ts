@@ -16,7 +16,9 @@ function resolvePassword(config: {
   return "";
 }
 
-function readExistingApiKey(apiKeyFile: string | undefined): string | undefined {
+function readExistingApiKey(
+  apiKeyFile: string | undefined,
+): string | undefined {
   if (!apiKeyFile || !existsSync(apiKeyFile)) return undefined;
   const content: string = readFileSync(apiKeyFile, "utf8").trim();
   return content.length > 0 ? content : undefined;
@@ -26,7 +28,9 @@ export async function applyStartupWizard(
   baseUrl: string,
   startup: StartupConfig,
 ): Promise<string> {
-  const existingKey: string | undefined = readExistingApiKey(startup.apiKeyFile);
+  const existingKey: string | undefined = readExistingApiKey(
+    startup.apiKeyFile,
+  );
   if (existingKey) {
     console.log("✓ startup API key already exists, skipping wizard");
     return existingKey;
@@ -61,6 +65,7 @@ export async function applyStartupWizard(
   }
 
   if (startup.user) {
+    await unauthClient.getStartupUser();
     const password: string = resolvePassword(startup.user);
     console.log("→ setting startup user");
     await unauthClient.updateStartupUser({

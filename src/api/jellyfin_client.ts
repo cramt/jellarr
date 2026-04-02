@@ -25,6 +25,7 @@ import type {
   PostNewUserResponse,
   PostUserPolicyResponse,
   PostStartupCompleteResponse,
+  GetStartupUserResponse,
   PostStartupConfigurationResponse,
   PostStartupUserResponse,
   PostStartupRemoteAccessResponse,
@@ -253,6 +254,16 @@ export function createJellyfinClient(
       if (res.error) {
         throw new Error(
           `POST /Startup/Complete failed: ${res.response.status.toString()}`,
+        );
+      }
+    },
+
+    async getStartupUser(): Promise<void> {
+      const res: GetStartupUserResponse = await client.GET("/Startup/User");
+
+      if (res.error) {
+        throw new Error(
+          `GET /Startup/User failed: ${res.response.status.toString()}`,
         );
       }
     },
