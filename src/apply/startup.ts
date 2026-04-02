@@ -50,16 +50,6 @@ export async function applyStartupWizard(
     console.log("✓ configured startup server settings");
   }
 
-  if (startup.user) {
-    const password: string = resolvePassword(startup.user);
-    console.log("→ setting startup user");
-    await unauthClient.updateStartupUser({
-      Name: startup.user.name,
-      Password: password,
-    });
-    console.log("✓ set startup user");
-  }
-
   if (startup.remoteAccess) {
     console.log("→ configuring remote access");
     await unauthClient.setRemoteAccess({
@@ -68,6 +58,16 @@ export async function applyStartupWizard(
         startup.remoteAccess.enableAutomaticPortMapping,
     });
     console.log("✓ configured remote access");
+  }
+
+  if (startup.user) {
+    const password: string = resolvePassword(startup.user);
+    console.log("→ setting startup user");
+    await unauthClient.updateStartupUser({
+      Name: startup.user.name,
+      Password: password,
+    });
+    console.log("✓ set startup user");
   }
 
   if (startup.completeStartupWizard) {
