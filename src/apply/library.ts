@@ -26,9 +26,7 @@ export function calculateLibraryDiff(
   );
 
   const foldersToCreate: VirtualFolderInfoSchema[] = desired
-    .filter(
-      (d: VirtualFolderConfig) => !currentNames.has(d.name),
-    )
+    .filter((d: VirtualFolderConfig) => !currentNames.has(d.name))
     .map(mapVirtualFolderConfigToSchema);
 
   if (foldersToCreate.length === 0) {
@@ -36,9 +34,7 @@ export function calculateLibraryDiff(
   }
 
   logger.info(
-    JSON.stringify(
-      foldersToCreate.map((f: VirtualFolderInfoSchema) => f.Name),
-    ),
+    JSON.stringify(foldersToCreate.map((f: VirtualFolderInfoSchema) => f.Name)),
   );
 
   return foldersToCreate;
