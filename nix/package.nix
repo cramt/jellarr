@@ -3,6 +3,13 @@
   pkgs,
   ...
 }:
+let
+  # pnpm-lock.yaml is lockfileVersion 9, written by pnpm 11. nixpkgs promoted
+  # `pkgs.pnpm` to the Rust rewrite (12), which resolves into a different store
+  # layout and so invalidates pnpmDeps.hash. Pin the resolver to the major that
+  # wrote the lockfile; bump both together when the lockfile is regenerated.
+  pnpm = pkgs.pnpm_11;
+in
 pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
   buildPhase = ''
     runHook preBuild
@@ -34,15 +41,21 @@ pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
     platforms = lib.platforms.all;
   };
 
+  # pnpmConfigHook no longer carries a pnpm of its own (the deprecated
+  # `pnpm.configHook` propagated one), so the resolver goes in explicitly.
   nativeBuildInputs = [
     pkgs.makeBinaryWrapper
     pkgs.nodejs_24
-    pkgs.pnpm.configHook
+    pkgs.pnpmConfigHook
+    pnpm
   ];
 
   pname = "jellarr";
 
-  pnpmDeps = pkgs.pnpm.fetchDeps {
+  # `pnpm.fetchDeps` / `pnpm.configHook` were deprecated in favour of the
+  # top-level attributes and are absent from pnpm 12 entirely.
+  pnpmDeps = pkgs.fetchPnpmDeps {
+    inherit pnpm;
     # fetcherVersion 3 was dropped for pnpm_11 (nixpkgs assert in
     # build-support/node/fetch-pnpm-deps). pnpm 11.9.0 needs fetcherVersion 4.
     # See https://nixos.org/manual/nixpkgs/stable/#javascript-pnpm-fetcherVersion.
