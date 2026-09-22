@@ -1,7 +1,7 @@
 import createClient, { type Client } from "openapi-fetch";
 import type { paths } from "../../generated/schema";
 
-const CLIENT_IDENTITY =
+const CLIENT_IDENTITY: string =
   'Client="jellarr", Device="cli", DeviceId="jellarr", Version="0.1.0"';
 
 export function makeClient(baseUrl: string, apiKey?: string): Client<paths> {

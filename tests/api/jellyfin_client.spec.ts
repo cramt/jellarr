@@ -1241,7 +1241,9 @@ describe("api/jf API Keys façade", () => {
     const req: Request = getLastRequest();
     expect(req.method).toBe("POST");
     expect(req.url).toMatch(/\/Auth\/Keys\?app=jellarr/);
-    expect(req.headers.get("X-Emby-Token")).toBe(apiKey);
+    expect(req.headers.get("Authorization")).toContain(
+      `MediaBrowser Token="${apiKey}"`,
+    );
   });
 
   it("when POST /Auth/Keys fails then it throws an error with status", async (): Promise<void> => {

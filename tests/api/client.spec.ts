@@ -34,4 +34,30 @@ describe("api/client", () => {
       spy.mockRestore();
     }
   });
+
+  it("whenNoApiKey_thenAuthorizationCarriesNoToken()", async () => {
+    // Arrange
+    const spy: Mock = vi
+      .spyOn(globalThis as unknown as { fetch: typeof fetch }, "fetch")
+      .mockResolvedValue(
+        new Response(JSON.stringify({ ok: true }), { status: 200 }),
+      );
+
+    try {
+      // Act -- the startup wizard runs before any API key exists
+      const jf: Client<paths> = makeClient("http://example:8096");
+
+      await jf.GET("/System/Info/Public");
+
+      // Assert
+      const req: Request = spy.mock.calls[0]?.[0] as Request;
+      const h: Headers = req.headers;
+      expect(h.get("Authorization")).toBe(
+        'MediaBrowser Client="jellarr", Device="cli", DeviceId="jellarr", Version="0.1.0"',
+      );
+      expect(h.get("Authorization")).not.toContain("undefined");
+    } finally {
+      spy.mockRestore();
+    }
+  });
 });

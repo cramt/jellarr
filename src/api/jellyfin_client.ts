@@ -261,7 +261,7 @@ export function createJellyfinClient(
     async getStartupUser(): Promise<void> {
       const res: GetStartupUserResponse = await client.GET("/Startup/User");
 
-      if (res.error) {
+      if (!res.response.ok) {
         throw new Error(
           `GET /Startup/User failed: ${res.response.status.toString()}`,
         );
@@ -279,7 +279,7 @@ export function createJellyfinClient(
         },
       );
 
-      if (res.error) {
+      if (!res.response.ok) {
         throw new Error(
           `POST /Startup/Configuration failed: ${res.response.status.toString()}`,
         );
@@ -292,7 +292,7 @@ export function createJellyfinClient(
         headers: { "content-type": "application/json" },
       });
 
-      if (res.error) {
+      if (!res.response.ok) {
         throw new Error(
           `POST /Startup/User failed: ${res.response.status.toString()}`,
         );
@@ -308,7 +308,7 @@ export function createJellyfinClient(
         },
       );
 
-      if (res.error) {
+      if (!res.response.ok) {
         throw new Error(
           `POST /Startup/RemoteAccess failed: ${res.response.status.toString()}`,
         );
@@ -327,7 +327,7 @@ export function createJellyfinClient(
         },
       );
 
-      if (res.error) {
+      if (!res.response.ok) {
         throw new Error(
           `POST /Users/AuthenticateByName failed: ${res.response.status.toString()}`,
         );
@@ -348,7 +348,7 @@ export function createJellyfinClient(
         params: { query: { app } },
       });
 
-      if (res.error) {
+      if (!res.response.ok) {
         throw new Error(
           `POST /Auth/Keys failed: ${res.response.status.toString()}`,
         );
@@ -358,7 +358,7 @@ export function createJellyfinClient(
     async getApiKeys(): Promise<AuthenticationInfoSchema[]> {
       const res: GetKeysResponse = await client.GET("/Auth/Keys");
 
-      if (res.error) {
+      if (!res.response.ok) {
         throw new Error(
           `GET /Auth/Keys failed: ${res.response.status.toString()}`,
         );
